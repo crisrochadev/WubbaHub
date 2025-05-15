@@ -9,10 +9,16 @@
     >
       <q-img :src="character.image">
         <q-slide-transition>
-          <div class="absolute-bottom " v-show="showInfo">
-              <div class="text-subtitle1">{{ character.name }}</div>
-              <div class="text-subtitle2">{{ character.species }}</div>
-              <q-btn label="Ver personagem" class="full- q-mt-md" color="secondary" unelevated/>
+          <div class="absolute-bottom" v-show="showInfo">
+            <div class="text-subtitle1">{{ character.name }}</div>
+            <div class="text-subtitle2">{{ character.species }}</div>
+            <q-btn
+              label="Ver personagem"
+              class="full- q-mt-md"
+              color="secondary"
+              unelevated
+              :to="{ name: 'character', params: { id: character.id } }"
+            />
           </div>
         </q-slide-transition>
       </q-img>
@@ -32,12 +38,12 @@ const showInfo = ref<boolean>(false);
 <style lang="scss" scoped>
 .character-card {
   opacity: 0.8;
-  width:calc((100% / 5) - 10px);
-  @media(max-width:695px){
-   width:calc((100% / 4) - 10px); 
+  width: calc((100% / 5) - 10px);
+  @media (max-width: 695px) {
+    width: calc((100% / 4) - 10px);
   }
-  @media(max-width:491px){
-   width:calc((100% / 2) - 10px); 
+  @media (max-width: 491px) {
+    width: calc((100% / 2) - 10px);
   }
 }
 .character-card:hover {

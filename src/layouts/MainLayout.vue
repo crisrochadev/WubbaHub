@@ -1,22 +1,30 @@
 <template>
   <q-layout view="hHh Lpr lFf">
-    <q-header  :class="[$q.dark.isActive ? 'bg-dark' : 'bg-primary']">
+    <q-header :class="[$q.dark.isActive ? 'bg-dark' : 'bg-white']" bordered>
       <q-toolbar>
         <q-btn
           flat
           dense
           round
           :icon="leftDrawerOpen ? 'close' : 'menu'"
+          color="primary"
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
 
         <q-toolbar-title>
-          <div class="logo-font logo-font-sm">Wubba Hub</div>
+          <div class="logo-font logo-font-sm full-width text-center">Wubba Hub</div>
         </q-toolbar-title>
 
         <div>
-          <q-btn round dense flat :icon="$q.dark.isActive ? 'light_mode' : 'dark_mode'" @click="changeDarkMode" />
+          <q-btn
+            color="primary"
+            round
+            dense
+            flat
+            :icon="$q.dark.isActive ? 'light_mode' : 'dark_mode'"
+            @click="changeDarkMode"
+          />
         </div>
       </q-toolbar>
     </q-header>
