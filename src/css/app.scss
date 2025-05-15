@@ -1,1 +1,23 @@
 // app global css in SCSS form
+@font-face {
+  font-family: GetSchwifty;
+  src: url("src/assets/fonts/get_schwifty.woff2");
+}
+
+.logo-font {
+  font-family: "GetSchwifty", sans-serif;
+  font-size: 64px;
+  color: #97ce4c;
+  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000,
+    2px 2px 0 #000, 0px 0px 8px #97ce4c;
+}
+.logo-font-sm{
+    font-size: 24px;
+}
+
+.logo-font-md{
+    font-size: 34px;
+}
+p{
+    margin:0;
+}
