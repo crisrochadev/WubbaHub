@@ -1,7 +1,10 @@
 <template>
   <q-layout view="hHh Lpr lFf">
-    <q-header :class="[$q.dark.isActive ? 'bg-dark' : 'bg-white']" bordered>
-      <q-toolbar>
+    <q-header
+      bordered
+      :class="[$q.dark.isActive ? 'bg-dark-page' : 'bg-white']"
+    >
+      <q-toolbar style="height: 70px">
         <q-btn
           flat
           dense
@@ -13,10 +16,13 @@
         />
 
         <q-toolbar-title>
-          <div class="logo-font logo-font-sm full-width text-center">Wubba Hub</div>
+          <div class="logo-font logo-font-md full-width text-center">
+            {{ isMobile ? "WB" : "Wubba Hub" }}
+          </div>
         </q-toolbar-title>
 
         <div>
+          <LocaleSelect />
           <q-btn
             color="primary"
             round
@@ -29,11 +35,14 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" overlay elevated>
+    <q-drawer
+      v-model="leftDrawerOpen"
+      bordered
+      behavior="desktop"
+      :class="[$q.dark.isActive ? 'bg-dark-page' : 'bg-white']"
+    >
       <q-list>
-        <q-item-label header> Essential Links </q-item-label>
-
-        <EssentialLink
+        <LinkMenuComponent
           v-for="link in linksList"
           :key="link.title"
           v-bind="link"
@@ -48,60 +57,57 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import EssentialLink, {
+import { computed, ref } from "vue";
+import LinkMenuComponent, {
   type EssentialLinkProps,
-} from "components/EssentialLink.vue";
+} from "components/LinkMenuComponent.vue";
 import { useQuasar } from "quasar";
+import { useI18n } from "vue-i18n";
+import LocaleSelect from "src/components/LocaleSelectComponent.vue";
 
 const $q = useQuasar();
-const linksList: EssentialLinkProps[] = [
+const { t } = useI18n();
+
+const linksList = computed(() => [
   {
-    title: "Docs",
-    caption: "quasar.dev",
-    icon: "school",
-    link: "https://quasar.dev",
+    title: t("links.characters"),
+    caption: t("links.characters_caption"),
+    icon: "person",
+    link: "/",
+    blank: false,
   },
   {
-    title: "Github",
-    caption: "github.com/quasarframework",
+    title: t("links.project"),
+    caption: t("links.project_caption"),
+    icon: "work",
+    link: "/about",
+    blank: false,
+  },
+  {
+    title: t("links.repository"),
+    caption: t("links.repository_caption"),
     icon: "code",
-    link: "https://github.com/quasarframework",
+    link: "https://github.com/crisrochadev/WubbaHub",
+    blank: true,
   },
   {
-    title: "Discord Chat Channel",
-    caption: "chat.quasar.dev",
-    icon: "chat",
-    link: "https://chat.quasar.dev",
+    title: t("links.portfolio"),
+    caption: t("links.portfolio_caption"),
+    icon: "cases",
+    link: "https://linkedin.com/in/crisrochadev",
+    blank: true,
   },
   {
-    title: "Forum",
-    caption: "forum.quasar.dev",
+    title: t("links.linkedin"),
+    caption: t("links.linkedin_caption"),
     icon: "record_voice_over",
-    link: "https://forum.quasar.dev",
+    link: "https://linkedin.com/in/crisrochadev",
+    blank: true,
   },
-  {
-    title: "Twitter",
-    caption: "@quasarframework",
-    icon: "rss_feed",
-    link: "https://twitter.quasar.dev",
-  },
-  {
-    title: "Facebook",
-    caption: "@QuasarFramework",
-    icon: "public",
-    link: "https://facebook.quasar.dev",
-  },
-  {
-    title: "Quasar Awesome",
-    caption: "Community Quasar projects",
-    icon: "favorite",
-    link: "https://awesome.quasar.dev",
-  },
-];
+]);
 
 const leftDrawerOpen = ref(false);
-
+const isMobile = computed(() => $q.screen.xs || $q.screen.sm);
 function changeDarkMode() {
   $q.dark.set(!$q.dark.isActive);
 }

@@ -5,16 +5,12 @@ import { GET_CHARACTERS } from "src/graphql/queries";
 
 
 
-export function useCharacters(variables: { page: number; name: string , status:string, gender:string}) {
+export function useCharacters(variables: { page: number; name: string , status:string, gender:string, specie:string, type:string}) {
   const { result, loading, error, refetch } = useQuery(
     GET_CHARACTERS,
     variables
   );
 
-  watch(loading, (newLoading) => {
-    if (newLoading) Loading.show();
-    else Loading.hide();
-  });
 
   return { result, loading, error, refetch };
 }
