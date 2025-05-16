@@ -18,9 +18,7 @@
       >
       <span
         class="text-weight-bolder text-negative"
-        :class="[
-          !$q.screen.xs && !$q.screen.sm ? 'text-h1' : 'text-h3',
-        ]"
+        :class="[!$q.screen.xs && !$q.screen.sm ? 'text-h1' : 'text-h3']"
         >404</span
       >
       <span
@@ -29,11 +27,11 @@
           $q.dark.isActive ? 'text-grey-2' : 'text-grey-8',
           !$q.screen.xs && !$q.screen.sm ? 'text-h6' : 'text-h6 text-center',
         ]"
-        >Morty! Nós erramos a dimensão… DE NOVO!</span
+        >{{ t("404") }}</span
       >
       <q-btn
         to="/"
-        label="Voltar para a realidade segura (página inicial)"
+        :label="t('back_to_home')"
         icon="west"
         class="q-mt-md"
         no-caps
@@ -48,6 +46,9 @@
 <script setup lang="ts">
 import { useQuasar } from "quasar";
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const $q = useQuasar();
 const height = computed<string>(() =>
@@ -57,6 +58,7 @@ const height = computed<string>(() =>
 
 <style scoped lang="scss">
 .container {
+  --height-var: v-bind(height);
   width: 100vw;
   height: 100vh;
   .error-info {
@@ -64,10 +66,10 @@ const height = computed<string>(() =>
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: v-bind(height);
+    height: var(--height-var);
   }
   .error-image {
-    height: v-bind(height);
+    height: var(--height-var);
   }
 }
 </style>

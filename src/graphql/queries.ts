@@ -1,5 +1,7 @@
 import { gql } from "graphql-tag";
 
+
+
 export const GET_CHARACTER = gql`
   query GetCharacter($id: ID!) {
     character(id: $id) {
@@ -37,10 +39,18 @@ export const GET_CHARACTERS = gql`
     $name: String
     $status: String
     $gender: String
+    $specie: String
+    $type: String
   ) {
     characters(
       page: $page
-      filter: { name: $name, status: $status, gender: $gender }
+      filter: {
+        name: $name
+        status: $status
+        gender: $gender
+        species: $specie
+        type: $type
+      }
     ) {
       info {
         count

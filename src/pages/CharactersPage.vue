@@ -1,38 +1,64 @@
 <template>
   <q-page padding class="container">
     <div class="full-height full-width content" v-if="result">
-      <div class="header row justify-end items-start q-py-md">
+      <div class="header row justify-end items-start q-pb-md">
         <q-btn
           v-if="$q.screen.xs || $q.screen.sm"
           icon="filter_alt"
           dense
+          flat
           style="height: 40px; width: 40px"
           class="q-ml-sm"
           unelevated
           color="primary"
+          :style="{
+            height: '30px',
+          }"
           @click="showFilter = !showFilter"
         />
-        <template v-if="$q.screen.xs || $q.screen.sm">
-          <q-slide-transition>
-            <div
-              class="col-12 q-mt-sm flex"
-              style="gap: 10px; flex-direction: column"
-              v-if="showFilter"
-            >
-              <FiltersComponent
-                v-model:name="name"
-                v-model:gender="gender"
-                v-model:status="status"
-                :filter="filter"
+        <q-slide-transition v-if="$q.screen.xs || $q.screen.sm">
+          <div
+            class="col-12 q-mt-sm flex"
+            style="gap: 10px; flex-direction: column"
+            v-if="showFilter"
+          >
+            <FiltersComponent
+              v-model:name="name"
+              v-model:gender="gender"
+              v-model:status="status"
+              v-model:specie="specie"
+              v-model:type="type"
+              :filter="filter"
+            />
+            <div class="flex justify-end">
+              <q-btn
+                :label="t('reset_filters')"
+                dense
+                color="grey-7"
+                icon="close"
+                unelevated
+                class="q-mt-sm q-mr-xs"
+                @click="resetFilter"
+              />
+              <q-btn
+                :label="t('apply_filters')"
+                dense
+                color="primary"
+                icon="done"
+                unelevated
+                class="q-mt-sm"
+                @click="applyFilter"
               />
             </div>
-          </q-slide-transition>
-        </template>
+          </div>
+        </q-slide-transition>
         <div v-else class="flex w-full filter justify-end">
           <FiltersComponent
             v-model:name="name"
             v-model:gender="gender"
             v-model:status="status"
+            v-model:specie="specie"
+            v-model:type="type"
             :filter="filter"
           />
         </div>
@@ -66,16 +92,21 @@
 <script setup lang="ts">
 import { ref, watch, computed } from "vue";
 import { useCharacters } from "src/composables/useCharacters";
-import CharactersCard from "src/components/CharactersCard.vue";
+import CharactersCard from "src/components/CharacterCardComponent.vue";
 import { useQuasar } from "quasar";
 import FiltersComponent from "src/components/FiltersComponent.vue";
 import ErrorComponent from "src/components/ErrorComponent.vue";
 import LoadingComponent from "src/components/LoadingComponent.vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const $q = useQuasar();
 const name = ref<string>("");
 const status = ref<{ value: string; label: string } | null>(null);
 const gender = ref<{ value: string; label: string } | null>(null);
+const specie = ref<{ value: string; label: string } | null>(null);
+const type = ref<{ value: string; label: string } | null>(null);
 const showFilter = ref<boolean>(false);
 const page = ref(1);
 const { result, loading, error, refetch } = useCharacters({
@@ -83,6 +114,8 @@ const { result, loading, error, refetch } = useCharacters({
   name: name.value,
   status: status.value ? status.value.value : "",
   gender: gender.value ? gender.value.value : "",
+  specie: specie.value ? specie.value.value : "",
+  type: type.value ? type.value.value : "",
 });
 
 const totalPages = computed(() => result.value?.characters.info.pages || 1);
@@ -115,17 +148,42 @@ watch(page, (newPage) => {
     name: name.value,
     status: status.value ? status.value.value : "",
     gender: gender.value ? gender.value.value : "",
+    specie: specie.value ? specie.value.value : "",
+    type: type.value ? type.value.value : "",
   });
 });
 
 function filter() {
-  console.log(status.value);
+  if (!showFilter.value) {
+    refetch({
+      page: page.value,
+      name: name.value,
+      status: status.value ? status.value.value : "",
+      gender: gender.value ? gender.value.value : "",
+      specie: specie.value ? specie.value.value : "",
+      type: type.value ? type.value.value : "",
+    });
+  }
+}
+
+function applyFilter() {
   refetch({
     page: page.value,
     name: name.value,
     status: status.value ? status.value.value : "",
     gender: gender.value ? gender.value.value : "",
+    specie: specie.value ? specie.value.value : "",
+    type: type.value ? type.value.value : "",
   });
+  showFilter.value = false;
+}
+function resetFilter() {
+  name.value = "";
+  status.value = null;
+  gender.value = null;
+  specie.value = null;
+  type.value = null;
+  applyFilter();
 }
 
 const random = ref<number>(Math.floor(Math.random() * 3));
@@ -154,15 +212,25 @@ const randomError = computed(() => errors.value[random.value]);
       .filter {
         gap: 10px;
         flex: 1;
+        .type {
+          width: calc(20% - 10px);
+        }
+        .specie {
+          width: calc(20% - 10px);
+        }
         .status {
-          width: 20% !important;
+          width: calc(20% - 10px);
         }
         .gender {
-          width: 20%;
+          width: calc(20% - 10px);
         }
         .name {
-          width: 40%;
+          width: calc(20% - 10px);
         }
+      }
+      .filter-mobile {
+        height: 30px;
+        margin-top: -5px;
       }
     }
   }
