@@ -6,35 +6,36 @@
       v-if="character"
     >
       <q-card-section
-        :horizontal="!$q.screen.xs && !$q.screen.sm"
+        :horizontal="!isXs"
         class="full-width full-height"
         style="overflow-y: hidden"
       >
         <CharacterInfoCard
           :character="character"
-          v-if="$q.screen.xs || $q.screen.sm"
+          v-if="isXs "
         />
         <q-img
           class="col-5"
+          :fit="isXs  ? 'contain' : 'cover'"
           :src="character.image"
           :style="{
-            height: $q.screen.xs || $q.screen.sm ? '30%' : '100%',
+            height: isXs  ? '30%' : '100%',
           }"
         />
         <div
           class="col-7"
-          :class="[!$q.screen.xs && !$q.screen.sm ? 'q-px-md' : 'q-py-md']"
+          :class="[!isXs ? 'q-px-md' : 'q-py-md']"
           :style="{
-            height: $q.screen.xs || $q.screen.sm ? '60%' : '100%',
+            height: isXs ? '60%' : '100%',
           }"
         >
           <CharacterInfoCard
             :character="character"
-            v-if="!$q.screen.xs && !$q.screen.sm"
+            v-if="!isXs "
           />
           <q-scroll-area class="full-height">
             <div class="text-grey-6 text-uppercase q-mb-xs q-px-sm">
-              Informações:
+              {{ t('information_s') }}
             </div>
             <div class="full-width row q-mb-md">
               <q-item
@@ -42,14 +43,14 @@
                 :class="[character.type ? 'col-md-3' : 'col-md-4']"
               >
                 <q-item-section side>
-                  <q-icon name="person" color="accent" />
+                  <q-icon name="person" color="accent"  aria-hidden="true"  />
                 </q-item-section>
                 <q-item-section>
                   <q-item-label caption class="text-grey-7"
-                    >Gênero</q-item-label
+                    >{{ t('gender') }}</q-item-label
                   >
                   <q-item-label class="text-secondary text-bold">{{
-                    character.gender
+                    t(character.gender)
                   }}</q-item-label>
                 </q-item-section>
               </q-item>
@@ -58,14 +59,14 @@
                 :class="[character.type ? 'col-md-3' : 'col-md-4']"
               >
                 <q-item-section side>
-                  <q-icon name="location_on" color="accent" />
+                  <q-icon name="location_on" color="accent"  aria-hidden="true"  />
                 </q-item-section>
                 <q-item-section>
                   <q-item-label caption class="text-grey-7"
-                    >Origem</q-item-label
+                    >{{ t('origin') }}</q-item-label
                   >
                   <q-item-label caption class="text-secondary text-bold">{{
-                    character.origin.name
+                    t(`location.${character.origin.name}`)
                   }}</q-item-label>
                 </q-item-section>
               </q-item>
@@ -74,14 +75,14 @@
                 :class="[character.type ? 'col-md-3' : 'col-md-4']"
               >
                 <q-item-section side>
-                  <q-icon name="place" color="accent" />
+                  <q-icon name="place" color="accent"  aria-hidden="true" />
                 </q-item-section>
                 <q-item-section>
                   <q-item-label caption class="text-grey-7"
-                    >Localização Atual</q-item-label
+                    >{{ t('current_location') }}</q-item-label
                   >
                   <q-item-label caption class="text-secondary text-bold">{{
-                    character.location.name
+                    t(`location.${character.location.name}`)
                   }}</q-item-label>
                 </q-item-section>
               </q-item>
@@ -91,17 +92,17 @@
                 :class="[character.type ? 'col-md-3' : 'col-md-4']"
               >
                 <q-item-section avatar>
-                  <q-icon name="category" color="orange" />
+                  <q-icon name="category" color="orange"  aria-hidden="true" />
                 </q-item-section>
                 <q-item-section>
                   <q-item-label caption class="text-grey-7">Tipo</q-item-label>
                   <q-item-label class="text-secondary text-bold">{{
-                    character.type
+                    t(`type.${character.type}`)
                   }}</q-item-label>
                 </q-item-section>
               </q-item>
             </div>
-            <div class="text-grey-6 text-uppercase q-px-sm">Aparece em:</div>
+            <div class="text-grey-6 text-uppercase q-px-sm">{{ t('appears_in') }}</div>
             <EpisodesComponent :character="character" class="q-pb-md" />
           </q-scroll-area>
         </div>
@@ -122,7 +123,10 @@ import { useQuasar } from "quasar";
 import EpisodesComponent from "src/components/EpisodesComponent.vue";
 import ErrorComponent from "src/components/ErrorComponent.vue";
 import LoadingComponent from "src/components/LoadingComponent.vue";
-import CharacterInfoCard from "src/components/CharacterInfoCard.vue";
+import CharacterInfoCard from "src/components/CharacterInfoComponent.vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const route = useRoute();
 const $q = useQuasar();
@@ -130,8 +134,11 @@ const id = route.params.id as string;
 
 const { result: characterData, loading, error } = useCharacter(id);
 
-// Reactive computed for better readability
 const character = computed(() => characterData.value?.character);
+
+const isXs = computed(() => $q.screen.xs);
+
+
 </script>
 
 <style lang="scss">
