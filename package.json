@@ -13,15 +13,19 @@
     "postinstall": "quasar prepare"
   },
   "dependencies": {
-    "pinia": "^3.0.1",
+    "@apollo/client": "^3.13.8",
     "@quasar/extras": "^1.16.4",
+    "@vue/apollo-composable": "^4.2.2",
+    "graphql": "^16.11.0",
+    "pinia": "^3.0.1",
     "quasar": "^2.16.0",
     "vue": "^3.4.18",
+    "vue-i18n": "^11.1.3",
     "vue-router": "^4.0.12"
   },
   "devDependencies": {
-    "@types/node": "^20.5.9",
     "@quasar/app-vite": "^2.1.0",
+    "@types/node": "^20.5.9",
     "autoprefixer": "^10.4.2",
     "typescript": "~5.5.3"
   },

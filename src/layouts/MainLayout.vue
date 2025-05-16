@@ -1,37 +1,48 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
+  <q-layout view="hHh Lpr lFf">
+    <q-header
+      bordered
+      :class="[$q.dark.isActive ? 'bg-dark-page' : 'bg-white']"
+    >
+      <q-toolbar style="height: 70px">
         <q-btn
           flat
           dense
           round
-          icon="menu"
+          :icon="leftDrawerOpen ? 'close' : 'menu'"
+          color="primary"
           aria-label="Menu"
-          @click="toggleLeftDrawer"
+          @click="leftDrawerOpen = !leftDrawerOpen"
         />
 
         <q-toolbar-title>
-          Quasar App
+          <div class="logo-font logo-font-md full-width text-center">
+            {{ isMobile ? "WB" : "Wubba Hub" }}
+          </div>
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>
+          <LocaleSelect />
+          <q-btn
+            color="primary"
+            round
+            dense
+            flat
+            :icon="$q.dark.isActive ? 'light_mode' : 'dark_mode'"
+            @click="changeDarkMode"
+          />
+        </div>
       </q-toolbar>
     </q-header>
 
     <q-drawer
       v-model="leftDrawerOpen"
-      show-if-above
       bordered
+      behavior="desktop"
+      :class="[$q.dark.isActive ? 'bg-dark-page' : 'bg-white']"
     >
       <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
+        <LinkMenuComponent
           v-for="link in linksList"
           :key="link.title"
           v-bind="link"
@@ -46,57 +57,58 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import EssentialLink, { type EssentialLinkProps } from 'components/EssentialLink.vue';
+import { computed, ref } from "vue";
+import LinkMenuComponent, {
+  type EssentialLinkProps,
+} from "components/LinkMenuComponent.vue";
+import { useQuasar } from "quasar";
+import { useI18n } from "vue-i18n";
+import LocaleSelect from "src/components/LocaleSelectComponent.vue";
 
-const linksList: EssentialLinkProps[] = [
+const $q = useQuasar();
+const { t } = useI18n();
+
+const linksList = computed(() => [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: t("links.characters"),
+    caption: t("links.characters_caption"),
+    icon: "person",
+    link: "/",
+    blank: false,
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
+    title: t("links.project"),
+    caption: t("links.project_caption"),
+    icon: "work",
+    link: "/about",
+    blank: false,
   },
   {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
+    title: t("links.repository"),
+    caption: t("links.repository_caption"),
+    icon: "code",
+    link: "https://github.com/crisrochadev/WubbaHub",
+    blank: true,
   },
   {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
+    title: t("links.portfolio"),
+    caption: t("links.portfolio_caption"),
+    icon: "cases",
+    link: "https://linkedin.com/in/crisrochadev",
+    blank: true,
   },
   {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
+    title: t("links.linkedin"),
+    caption: t("links.linkedin_caption"),
+    icon: "record_voice_over",
+    link: "https://linkedin.com/in/crisrochadev",
+    blank: true,
   },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-];
+]);
 
 const leftDrawerOpen = ref(false);
-
-function toggleLeftDrawer () {
-  leftDrawerOpen.value = !leftDrawerOpen.value;
+const isMobile = computed(() => $q.screen.xs || $q.screen.sm);
+function changeDarkMode() {
+  $q.dark.set(!$q.dark.isActive);
 }
 </script>
