@@ -1,14 +1,12 @@
 import { useQuery } from "@vue/apollo-composable";
 import { watch } from "vue";
 import { Loading } from "quasar";
-import { GET_CHARACTERS } from "src/graphql/queries";
+import { GET_CHARACTER } from "src/graphql/queries"; // ajuste o caminho conforme sua estrutura
 
-
-
-export function useCharacters(variables: { page: number; name: string , status:string, gender:string}) {
+export function useCharacter(id: string) {
   const { result, loading, error, refetch } = useQuery(
-    GET_CHARACTERS,
-    variables
+    GET_CHARACTER,
+    () => ({ id }) // reativo
   );
 
   watch(loading, (newLoading) => {
