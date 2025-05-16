@@ -1,17 +1,17 @@
 <template>
   <q-card class="character-card">
     <q-item
-      class="full-width"
+      class="full-width item-card"
       style="padding: 0 !important"
       clickable
-      @mouseleave="showInfo = false"
-      @mouseenter="showInfo = true"
     >
       <q-img :src="character.image">
         <q-slide-transition>
-          <div class="absolute-bottom" v-show="showInfo">
-            <div class="text-subtitle1">{{ character.name }}</div>
-            <div class="text-subtitle2">{{ character.species }}</div>
+          <div class="absolute-bottom full-height flex items-center info-card">
+            <div class="full-width">
+              <div class="text-subtitle1">{{ character.name }}</div>
+              <div class="text-subtitle2">{{ character.species }}</div>
+            </div>
             <q-btn
               label="Ver personagem"
               class="full- q-mt-md"
@@ -29,10 +29,9 @@
 <script setup lang="ts">
 import { defineProps, ref } from "vue";
 import { CharacterType } from "src/types";
-const props = defineProps<{
+defineProps<{
   character: CharacterType;
 }>();
-const showInfo = ref<boolean>(false);
 </script>
 
 <style lang="scss" scoped>
@@ -45,8 +44,17 @@ const showInfo = ref<boolean>(false);
   @media (max-width: 491px) {
     width: calc((100% / 2) - 10px);
   }
-}
-.character-card:hover {
-  opacity: 1;
+  .info-card {
+    opacity: 0;
+    top: -50%;
+    transition: 0.3s ease-in-out;
+  }
+  &:hover {
+    opacity: 1;
+    .info-card {
+      opacity: 1;
+      top: 0;
+    }
+  }
 }
 </style>

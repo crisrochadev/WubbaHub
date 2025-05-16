@@ -11,10 +11,6 @@ export function useCharacters(variables: { page: number; name: string , status:s
     variables
   );
 
-  watch(loading, (newLoading) => {
-    if (newLoading) Loading.show();
-    else Loading.hide();
-  });
 
   return { result, loading, error, refetch };
 }

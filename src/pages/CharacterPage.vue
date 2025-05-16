@@ -1,7 +1,7 @@
 <template>
-  <q-page style="height: calc(100vh - 50px)">
+  <q-page style="height: calc(100vh - 70px)">
     <q-card
-      class="full-width full-height q-py-sm q-px-sm"
+      class="full-width full-height q-py-sm q-px-sm bg-transparent"
       flat
       v-if="character"
     >
@@ -10,35 +10,10 @@
         class="full-width full-height"
         style="overflow-y: hidden"
       >
-        <q-card
+        <CharacterInfoCard
+          :character="character"
           v-if="$q.screen.xs || $q.screen.sm"
-          flat
-          :class="[
-            $q.dark.isActive ? 'bg-dark' : 'bg-white',
-            '  q-pb-sm q-mb-md',
-          ]"
-        >
-          <div class="row q-mt-sm q-mx-md">
-            <div
-              class="text-h5 col-12 col-md-9 text-accent text-bold"
-              :class="[$q.screen.xs || $q.screen.sm ? 'text-center' : '']"
-            >
-              {{ character.name }}
-            </div>
-            <div class="col-12 col-md-3 justify-center flex">
-              <span
-                class="text-center q-mr-md text-bold"
-                :class="[`text-${getStatusColor(character.status)}`]"
-                >{{ character.status }}</span
-              >
-              <span
-                class="text-center text-bold"
-                :class="[`text-${getStatusColor(character.status)}`]"
-                >{{ character.species }}</span
-              >
-            </div>
-          </div>
-        </q-card>
+        />
         <q-img
           class="col-5"
           :src="character.image"
@@ -53,35 +28,10 @@
             height: $q.screen.xs || $q.screen.sm ? '60%' : '100%',
           }"
         >
-          <q-card
+          <CharacterInfoCard
+            :character="character"
             v-if="!$q.screen.xs && !$q.screen.sm"
-            flat
-            :class="[
-              $q.dark.isActive ? 'bg-dark' : 'bg-white',
-              '  q-py-sm q-mb-md sticky',
-            ]"
-          >
-            <div class="row q-mt-sm q-mx-md">
-              <div
-                class="text-h5 col-12 col-md-9 text-accent text-bold"
-                :class="[$q.screen.xs || $q.screen.sm ? 'text-center' : '']"
-              >
-                {{ character.name }}
-              </div>
-              <div class="col-12 col-md-3 justify-center flex">
-                <span
-                  class="text-center q-mr-md text-bold"
-                  :class="[`text-${getStatusColor(character.status)}`]"
-                  >{{ character.status }}</span
-                >
-                <span
-                  class="text-center text-bold"
-                  :class="[`text-${getStatusColor(character.status)}`]"
-                  >{{ character.species }}</span
-                >
-              </div>
-            </div>
-          </q-card>
+          />
           <q-scroll-area class="full-height">
             <div class="text-grey-6 text-uppercase q-mb-xs q-px-sm">
               Informações:
@@ -157,6 +107,10 @@
         </div>
       </q-card-section>
     </q-card>
+    <ErrorComponent :error="error" v-else-if="error" />
+    <ErrorComponent v-else-if="!loading" />
+
+    <LoadingComponent :loading="loading" />
   </q-page>
 </template>
 
@@ -166,6 +120,9 @@ import { useCharacter } from "src/composables/useCharacter";
 import { computed } from "vue";
 import { useQuasar } from "quasar";
 import EpisodesComponent from "src/components/EpisodesComponent.vue";
+import ErrorComponent from "src/components/ErrorComponent.vue";
+import LoadingComponent from "src/components/LoadingComponent.vue";
+import CharacterInfoCard from "src/components/CharacterInfoCard.vue";
 
 const route = useRoute();
 const $q = useQuasar();
@@ -175,17 +132,6 @@ const { result: characterData, loading, error } = useCharacter(id);
 
 // Reactive computed for better readability
 const character = computed(() => characterData.value?.character);
-
-function getStatusColor(status: string) {
-  switch (status) {
-    case "Alive":
-      return "green";
-    case "Dead":
-      return "red";
-    default:
-      return "grey";
-  }
-}
 </script>
 
 <style lang="scss">

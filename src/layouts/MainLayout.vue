@@ -1,7 +1,7 @@
 <template>
   <q-layout view="hHh Lpr lFf">
-    <q-header :class="[$q.dark.isActive ? 'bg-dark' : 'bg-white']" bordered>
-      <q-toolbar>
+    <q-header class="bg-transparent" >
+      <q-toolbar style="height:70px">
         <q-btn
           flat
           dense
@@ -13,7 +13,7 @@
         />
 
         <q-toolbar-title>
-          <div class="logo-font logo-font-sm full-width text-center">Wubba Hub</div>
+          <div class="logo-font logo-font-md  full-width text-center">Wubba Hub</div>
         </q-toolbar-title>
 
         <div>
