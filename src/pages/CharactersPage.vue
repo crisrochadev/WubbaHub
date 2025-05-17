@@ -154,6 +154,7 @@ watch(page, (newPage) => {
 });
 
 function filter() {
+  console.log(specie.value)
   if (!showFilter.value) {
     refetch({
       page: page.value,
