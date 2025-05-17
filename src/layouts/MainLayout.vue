@@ -77,13 +77,6 @@ const linksList = computed(() => [
     blank: false,
   },
   {
-    title: t("links.project"),
-    caption: t("links.project_caption"),
-    icon: "work",
-    link: "/about",
-    blank: false,
-  },
-  {
     title: t("links.repository"),
     caption: t("links.repository_caption"),
     icon: "code",
