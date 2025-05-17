@@ -7,7 +7,7 @@
             <div class="full-width">
               <div class="text-subtitle1">{{ character.name }}</div>
               <div class="text-subtitle2">
-                {{ t(`species.${character.species}`) }}
+                {{ getSpecieName(character.species) }}
               </div>
             </div>
             <q-btn
@@ -26,17 +26,21 @@
 
 <script setup lang="ts">
 import { defineProps, ref } from "vue";
-import { CharacterType } from "src/types";
+import  { Character } from "src/types/Character";
 import { useI18n } from "vue-i18n";
+import useLang from "src/composables/useLang";
 
+const { getSpecieName } = useLang();
 const { t } = useI18n();
 defineProps<{
-  character: CharacterType;
+  character: Character;
 }>();
+
+
 </script>
 
 <style lang="scss" scoped>
-:deep(.item-card .q-item__section) {
+:deep(.item-card) {
   padding: 0 !important;
 }
 .character-card {

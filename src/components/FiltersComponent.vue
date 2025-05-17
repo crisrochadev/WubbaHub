@@ -7,18 +7,7 @@
     filled
     v-model="type"
     clearable
-    :options="[
-      { value: '', label: t('all') },
-      { value: 'Parasite', label: t('type.Parasite') },
-      { value: 'Human with antennae', label: t('type.Human with antennae') },
-      { value: 'Clone', label: t('type.Clone') },
-      { value: 'Robot', label: t('type.Robot') },
-      { value: 'Mytholog', label: t('type.Mytholog') },
-      { value: 'Cronenberg', label: t('type.Cronenberg') },
-      { value: 'Hivemind', label: t('type.Hivemind') },
-      { value: 'Disease', label: t('type.Disease') },
-      { value: 'Alien', label: t('type.Alien') },
-    ]"
+    :options="types"
     :label="t('filter_by_type')"
     @update:model-value="filter"
   />
@@ -30,22 +19,7 @@
     filled
     v-model="specie"
     clearable
-    :options="[
-      { value: '', label: t('Unknown') },
-      { value: 'Human', label: t('species.Human') },
-      { value: 'Alien', label: t('species.Alien') },
-      { value: 'Humanoid', label: t('species.Humanoid') },
-      { value: 'Robot', label: t('species.Robot') },
-      { value: 'Cronenberg', label: t('species.Cronenberg') },
-      { value: 'Animal', label: t('species.Animal') },
-      {
-        value: 'MythologicalCreature',
-        label: t('species.MythologicalCreature'),
-      },
-      { value: 'Disease', label: t('species.Disease') },
-      { value: 'Vampire', label: t('species.Vampire') },
-      { value: 'Poopybutthole', label: t('species.Poopybutthole') },
-    ]"
+    :options="species"
     :label="t('filter_by_specie')"
     @update:model-value="filter"
   />
@@ -102,7 +76,7 @@
 import { defineProps, defineEmits, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 
-const { t } = useI18n();
+const { t, messages, locale } = useI18n();
 
 interface ValueType {
   value: string;
@@ -163,6 +137,36 @@ const specie = computed<ValueType | null>({
   set(new_specie: ValueType | null) {
     emit("update:specie", new_specie);
   },
+});
+
+const types = computed(() => {
+  let typesArray = [] as ValueType[];
+  const messagesLocale = messages.value[locale.value];
+  if (messagesLocale) {
+    const typesLocale = messagesLocale.type;
+    Object.entries(typesLocale).forEach(([key, value]) => {
+      typesArray.push({
+        value: key,
+        label: value as string,
+      });
+    });
+  }
+  return typesArray;
+});
+
+const species = computed(() => {
+  let speciesArray = [] as ValueType[];
+  const messagesLocale = messages.value[locale.value];
+  if (messagesLocale) {
+    const speciesLocale = messagesLocale.species;
+    Object.entries(speciesLocale).forEach(([key, value]) => {
+      speciesArray.push({
+        value: key,
+        label: value as string,
+      });
+    });
+  }
+  return speciesArray;
 });
 </script>
 
