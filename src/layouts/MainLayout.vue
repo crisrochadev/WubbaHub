@@ -17,7 +17,7 @@
 
         <q-toolbar-title>
           <div class="logo-font logo-font-md full-width text-center">
-            {{ isMobile ? "WB" : "Wubba Hub" }}
+            {{ isMobile ? "WH" : "Wubba Hub" }}
           </div>
         </q-toolbar-title>
 

@@ -56,6 +56,7 @@ export default {
     Unknown: "Unknown",
     "Testicle Monster Dimension": "Testicle Monster Dimension",
     "Genetic experiment": "Genetic experiment",
+    "Earth (Unknown dimension)": "Earth (Unknown dimension)"
   },
   all: "All",
 

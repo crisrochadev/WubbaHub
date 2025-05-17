@@ -66,7 +66,7 @@
                     >{{ t('origin') }}</q-item-label
                   >
                   <q-item-label caption class="text-secondary text-bold">{{
-                    t(`location.${character.origin.name}`)
+                    getLocationName(character.origin.name)
                   }}</q-item-label>
                 </q-item-section>
               </q-item>
@@ -82,7 +82,7 @@
                     >{{ t('current_location') }}</q-item-label
                   >
                   <q-item-label caption class="text-secondary text-bold">{{
-                    t(`location.${character.location.name}`)
+                   getLocationName(character.location.name)
                   }}</q-item-label>
                 </q-item-section>
               </q-item>
@@ -97,7 +97,7 @@
                 <q-item-section>
                   <q-item-label caption class="text-grey-7">Tipo</q-item-label>
                   <q-item-label class="text-secondary text-bold">{{
-                    t(`type.${character.type}`)
+                    getTypeName(character.type)
                   }}</q-item-label>
                 </q-item-section>
               </q-item>
@@ -125,6 +125,10 @@ import ErrorComponent from "src/components/ErrorComponent.vue";
 import LoadingComponent from "src/components/LoadingComponent.vue";
 import CharacterInfoCard from "src/components/CharacterInfoComponent.vue";
 import { useI18n } from "vue-i18n";
+
+import useLang from "src/composables/useLang";
+
+const { getLocationName, getTypeName} = useLang();
 
 const { t } = useI18n();
 

@@ -26,7 +26,7 @@
           <span
             class="text-center text-bold"
             :class="[`text-${statusColor}`]"
-            >{{ t(`species.${character.species}`) }}</span
+            >{{ getSpecieName(character.species)}}</span
           >
         </div>
       </div>
@@ -41,6 +41,9 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { getStatusColor } from "src/composables/useCharacterUtils";
 import { useQuasar } from "quasar";
+import useLang from "src/composables/useLang";
+
+const { getSpecieName } = useLang();
 
 const props = defineProps<{ character: Character }>();
 const { t } = useI18n();
